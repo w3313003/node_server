@@ -9,12 +9,18 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 var test = require('./routes/test');
 var login = require('./routes/login');
+var userinfo = require('./routes/userinfo');
+var async = require('./routes/async');
 var app = express();
+
+
+
 // 跨域配置
-app.all('*', function(req, res, next) {
-    res.header('Access-Control-Allow-Origin', '*');
+app.all('http://localhost:8080/#/userList', function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', 'http://localhost:8080/#/userList');
     res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
     res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Credentials', true);
     if (req.method == 'OPTIONS') { res.send(200); /让options请求快速返回/ } else { next(); }
 });
 var db = require('mongoskin').db('mongodb://127.0.0.1:27017/mydb');
@@ -35,7 +41,8 @@ app.use('/', index);
 app.use('/users', users);
 app.use('/test', test);
 app.use('/login', login);
-
+app.use('/userinfo', userinfo)
+app.use('/async', async)
 app.use('/username', function(req, res, next) {
     res.send('pretty');
 });
@@ -75,9 +82,6 @@ app.get('/video/:id', function(req, res, next) {
 app.get('/video/:id', function(req, res, next) {
     console.log(path.join(__dirname, 'public'))
 });
-
-
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -27,5 +27,4 @@ router.get('/jsonp', (req, res, next) => {
 
 
 
-
 module.exports = router;
